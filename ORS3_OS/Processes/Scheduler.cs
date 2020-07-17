@@ -25,7 +25,7 @@ namespace ORS3_OS.Processes
             Blocked = new List<Process>();
         }
 
-        // prioritet ima onaj proces koji je najmanje korisito CPU (CPU_Utilization 0-100%)
+        // prioritet ima onaj proces koji je najmanje korisito CPU (CPU_Usage 0-100%)
         private Process HighestPriority()
         {
             int cpu = 100;
