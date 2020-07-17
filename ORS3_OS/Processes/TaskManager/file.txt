@@ -1,102 +1,54 @@
-System.String[]
-Operating system
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
-System.String[]
+Name      PID      Status      CPU_Usage      Memory      
+-------------------------------------------------------------------
+System.io        6923        Running        1        0        
+0        8208        Ready        0        0        
+1        8110        Ready        0        0        
+2        8083        Ready        0        0        
+3        7604        Ready        0        0        
+4        7901        Ready        0        0        
+5        8042        Ready        0        0        
+6        4779        Ready        0        0        
+7        6505        Ready        0        0        
+8        2707        Ready        0        0        
+9        7420        Ready        0        0        
+10        4636        Ready        0        0        
+11        6029        Ready        0        0        
+12        5775        Ready        0        0        
+13        3248        Ready        0        0        
+14        4231        Ready        0        0        
+15        9037        Ready        0        0        
+16        8557        Ready        0        0        
+17        8794        Ready        0        0        
+18        3471        Ready        0        0        
+19        2857        Ready        0        0        
+20        5122        Ready        0        0        
+21        7444        Ready        0        0        
+22        4968        Ready        0        0        
+23        6691        Ready        0        0        
+24        2354        Ready        0        0        
+25        7246        Ready        0        0        
+26        3447        Ready        0        0        
+27        4563        Ready        0        0        
+28        6561        Ready        0        0        
+29        8638        Ready        0        0        
+30        6391        Ready        0        0        
+31        8532        Ready        0        0        
+32        2542        Ready        0        0        
+33        4382        Ready        0        0        
+34        9810        Ready        0        0        
+35        6337        Ready        0        0        
+36        2209        Ready        0        0        
+37        7511        Ready        0        0        
+38        1865        Ready        0        0        
+39        9015        Ready        0        0        
+40        8743        Ready        0        0        
+41        9068        Ready        0        0        
+42        2628        Ready        0        0        
+43        3190        Ready        0        0        
+44        2272        Ready        0        0        
+45        6597        Ready        0        0        
+46        9140        Ready        0        0        
+47        2682        Ready        0        0        
+48        5891        Ready        0        0        
+49        1627        Ready        0        0        
+System        6966        Ready        0        0        

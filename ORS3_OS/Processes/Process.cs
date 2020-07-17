@@ -17,7 +17,7 @@ namespace ORS3_OS.Processes
         public Process (String Name)
         {
             Random rnd = new Random();
-            Pid = rnd.Next(0, 1000);
+            Pid = rnd.Next(1000, 10000);
             //this.Memory = Memory;
             this.Name = Name;
             CPU_usage = 0;
@@ -67,6 +67,18 @@ namespace ORS3_OS.Processes
             Memory = m;
         }
 
+        public String[] Info()
+        {
+            String[] res = new String[5];
+            res[0] = Name;
+            res[1] = Pid.ToString();
+            res[2] = Status;
+            res[3] = CPU_usage.ToString();
+            res[4] = Memory.ToString();
+
+            return res;
+
+        }
 
 
     }
