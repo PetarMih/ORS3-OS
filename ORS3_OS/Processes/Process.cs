@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace ORS3_OS.Processes
@@ -12,8 +14,9 @@ namespace ORS3_OS.Processes
         public int Memory { get; set; }
         public int CPU_usage { get; set; }
         public String Name { get; set; }
-        public Thread Work { get; set; }
+        
 
+        
         public Process (String Name)
         {
             Random rnd = new Random();
@@ -33,18 +36,14 @@ namespace ORS3_OS.Processes
             }
             Console.WriteLine("Process"+Name+"have:"+CPU_usage+" CPU usage.");
         }
-        public void BlockSignal()
-        {
-            
-        }
+
         public void Blocked()
         {
-            this.Status = "Blocked";
-            Console.WriteLine("Process" + this.Name + "is blocked.");
+            Status = "Blocked";
         }
         public void Ready()
         {
-            this.Status = "Ready";
+            Status = "Ready";
             Console.WriteLine("Process" + this.Name + "is ready.");
         }
         
@@ -75,11 +74,8 @@ namespace ORS3_OS.Processes
             res[2] = Status;
             res[3] = CPU_usage.ToString();
             res[4] = Memory.ToString();
-
+            
             return res;
-
         }
-
-
     }
 }
