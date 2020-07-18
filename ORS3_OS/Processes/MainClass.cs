@@ -11,39 +11,52 @@ namespace ORS3_OS.Processes
     class MainClass
     {
 
-        public static void Main (String [] args)
+        public static void Main(String[] args)
         {
-
-            
             Scheduler sc = new Scheduler();
 
-            for(int i=0; i<50; i++)
+            for (int i = 0; i < 50; i++)
             {
-                sc.NewProcess(i.ToString());
+                sc.NewProcess("P"+i.ToString());
             }
             sc.NewProcess("System");
             sc.NewProcess("System.io");
-            //sc.RunThread();
             sc.CPUUtilization();
 
             Thread reru = new Thread(new ThreadStart(sc.ReadyToRunningStart)); //vrsi se stalno prebacivanje iz stanja ready u running i obrnuto
             Thread rure = new Thread(new ThreadStart(sc.RunningToReadyStart));
-            //Thread block = new Thread(new ThreadStart(sc.Block));
-            //Thread unblock = new Thread(new ThreadStart(sc.Unblock));
+            Thread block = new Thread(new ThreadStart(sc.BlockStart));
+            Thread unblock = new Thread(new ThreadStart(sc.UnblockStart));
 
             reru.Start();
             rure.Start();
-            //block.Start();
-            //unblock.Start();
+            block.Start();
+            unblock.Start();
 
-            
+            while (true)
+            {
+                Console.WriteLine("Input command:");
+                String com = Console.ReadLine();
+                if (com == "TaskManager")
+                {
+                    sc.TaskManager();
+                }
+                else
+                {
+                    Console.WriteLine("Unknown command!");
+                }
+                if (com == "Exit")
+                {
+                    System.Environment.Exit(1);
+                }
+                else
+                {
+                    Console.WriteLine("Unknown command!");
+                }
+                Thread.Sleep(100);
+            }
 
-            sc.TaskManager();
-            
-
-            
         }
 
-        
     }
 }

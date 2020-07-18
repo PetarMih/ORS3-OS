@@ -25,12 +25,12 @@ namespace ORS3_OS.Processes
             Blocked = new List<Process>();
         }
 
-        // prioritet ima onaj proces koji je najmanje korisito CPU (CPU_Usage 0-100%)
+        // prioritet ima onaj proces koji je najmanje korisito CPU (CPU_Utilization 0-100%)
         private Process HighestPriority()
         {
             int cpu = 100;
             Process p = null;
-            foreach(Process pr in this.Ready)
+            foreach (Process pr in this.Ready)
             {
                 if (pr.CPU_usage <= cpu)
                 {
@@ -44,20 +44,28 @@ namespace ORS3_OS.Processes
         public void ReadyToRunning()
         {
             Process p = this.HighestPriority();
-            p.Status = "Running";
-            p.CPU_usage++;
-            this.Ready.Remove(p);
-            this.Running.Add(p);
+            if (p == null || Ready.Count == 0)
+            {
+                //Console.WriteLine("No ready process.");
+            }
+            else
+            {
+                p.Status = "Running";
+                p.CPU_usage++;
+                Ready.Remove(p);
+                Running.Add(p);
+                //Console.WriteLine("ReadyToRunning");
+                //Console.WriteLine("Process status: " + p.Status);
+                //Console.WriteLine("Running count: "+Running.Count);
+            }
 
-            Console.WriteLine("ReadyToRunning");
-            //Thread.Sleep(1000);
         }
         // prebacujemo onaj proces koji je najvise koristio CPU
         public void RunningToReady()
         {
             int cpu = 0;
             Process p = null;
-            foreach(Process pr in this.Running)
+            foreach (Process pr in this.Running)
             {
                 if (pr.CPU_usage >= cpu)
                 {
@@ -66,43 +74,38 @@ namespace ORS3_OS.Processes
                 }
             }
 
-            if (p == null)
+            if (p == null || Running.Count == 0)
             {
-                Console.WriteLine("No running process.");
+                //Console.WriteLine("No running process.");
             }
             else
             {
                 p.Status = "Ready";
-                p.CPU_usage++;
                 Running.Remove(p);
                 Ready.Add(p);
+                //Console.WriteLine("RunningTOReady");
             }
-            
-
-            //Thread.Sleep(100);
-            //Thread.Yield();
-            Console.WriteLine("RunningTOReady");
         }
 
-        public void Block()
+        public void BlockProcess(int pid)
         {
-            foreach(Process p in this.Running)
+            lock (Running)
             {
-                if (p.Status == "Blocked")
+                foreach(Process p in Running)
                 {
-                    this.Blocked.Add(p);
-                    this.Running.Remove(p);
-                    Console.WriteLine("Process blocked.");
+                    if (p.Pid == pid)
+                    {
+                        p.Blocked();
+                        Running.Remove(p);
+                        Blocked.Add(p);
+                    }
                 }
-                
             }
-            Thread.Sleep(500);
-           
         }
 
         public void Unblock()
         {
-            foreach(Process p in this.Blocked)
+            foreach (Process p in this.Blocked)
             {
                 if (p.Status == "Ready")
                 {
@@ -111,8 +114,7 @@ namespace ORS3_OS.Processes
                     Console.WriteLine("Process unblocked.");
                 }
             }
-            Thread.Sleep(1000);
-            
+
         }
         /*
         public void RunThread()
@@ -138,22 +140,22 @@ namespace ORS3_OS.Processes
             {
                 String path = @"C:\Users\Dell\Documents\GitHub\ORS3-OS\ORS3_OS\Processes\TaskManager\file.txt";
                 StreamWriter sw = File.CreateText(path);
-                String[] info = { "Name", "PID", "Status", "CPU_Usage", "Memory" };
-                foreach(String s in info)
+                String[] info = { "Name", "PID", "Status", "CPU_Usage(%)", "Memory(KB)" };
+                foreach (String s in info)
                 {
-                    sw.Write(s + "      ");
+                    sw.Write("      " + s + "        ");
                 }
                 sw.Write("\n");
-                sw.Write("-------------------------------------------------------------------");
+                sw.Write("------------------------------------------------------------------------------------------");
                 sw.Write("\n");
                 //sw.WriteLine("Operating system");
-                
-                foreach(Process p in this.Running)
+
+                foreach (Process p in this.Running)
                 {
                     info = p.Info();
-                    foreach(String s in info)
+                    foreach (String s in info)
                     {
-                        sw.Write(s + "        ");
+                        sw.Write("      " + s + "        ");
                     }
                     sw.Write("\n");
                 }
@@ -162,7 +164,7 @@ namespace ORS3_OS.Processes
                     info = p.Info();
                     foreach (String s in info)
                     {
-                        sw.Write(s + "        ");
+                        sw.Write("      " + s + "        ");
                     }
                     sw.Write("\n");
                 }
@@ -171,7 +173,7 @@ namespace ORS3_OS.Processes
                     info = p.Info();
                     foreach (String s in info)
                     {
-                        sw.Write(s + "        ");
+                        sw.Write("      " + s + "        ");
                     }
                     sw.Write("\n");
                 }
@@ -179,7 +181,7 @@ namespace ORS3_OS.Processes
                 sw.Close();
 
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -195,7 +197,7 @@ namespace ORS3_OS.Processes
          */
         public void CPUUtilization()
         {
-            System.Timers.Timer time = new System.Timers.Timer(1000);
+            System.Timers.Timer time = new System.Timers.Timer(500);
             System.Timers.Timer time1 = new System.Timers.Timer(1000);
             time.AutoReset = true;
             time1.AutoReset = true;
@@ -207,31 +209,24 @@ namespace ORS3_OS.Processes
         }
         private void CPU_usage(object sender, System.Timers.ElapsedEventArgs e)
         {
-            foreach(Process p in Running)
+            foreach (Process p in Running)
             {
                 p.CPU_usage++;
             }
-            Console.WriteLine("Process is using cpu! "+e.SignalTime);
+            //Console.WriteLine("Process is using cpu! "+e.SignalTime);
         }
 
         private void ProcessFinish(object sender, System.Timers.ElapsedEventArgs e)
         {
-            foreach(Process p in Running)
+            foreach (Process p in Running)
             {
                 if (p.CPU_usage == 100)
                 {
-                    Console.WriteLine("Process: "+p.Name+" finished!");
+                    p.Finish();
                     Running.Remove(p);
+                    break;
                 }
             }
-        }
-
-        public void Work()
-        {
-            ReadyToRunning();
-            RunningToReady();
-            Block();
-            Unblock();
         }
 
         public void ReadyToRunningStart()
@@ -240,17 +235,31 @@ namespace ORS3_OS.Processes
             {
                 ReadyToRunning();
                 Thread.Sleep(500);
-                Thread.Yield();
             }
-            
+
         }
         public void RunningToReadyStart()
         {
             while (true)
             {
                 RunningToReady();
-                Thread.Sleep(400);
+                Thread.Sleep(800);
+                Thread.Yield();
             }
+
+        }
+        public void BlockStart()
+        {
+            while (true)
+            {
+                //BlockProcess(int p);
+                Thread.Sleep(1000);
+            }
+        }
+        public void UnblockStart()
+        {
+            Unblock();
+            Thread.Sleep(1000);
         }
 
     }
