@@ -10,7 +10,10 @@ namespace ORS3_OS.Processes
 {
     class MainClass
     {
-
+        public static List<string> RAM = new List<string>();
+        public static List<string> HardDriveMemory = new List<string>();
+        public static int MAX_RAM = 20;
+        
         public static void Main(String[] args)
         {
             Scheduler sc = new Scheduler();
@@ -37,17 +40,13 @@ namespace ORS3_OS.Processes
             {
                 Console.WriteLine("Input command:");
                 String com = Console.ReadLine();
-                if (com == "TaskManager")
+                if (com.Equals("TaskManager"))
                 {
                     sc.TaskManager();
                 }
-                else
+                else if (com.Equals ("Exit"))
                 {
-                    Console.WriteLine("Unknown command!");
-                }
-                if (com == "Exit")
-                {
-                    System.Environment.Exit(1);
+                    System.Environment.Exit(0);
                 }
                 else
                 {
