@@ -50,6 +50,10 @@ namespace ORS3_OS.Processes
             }
             else
             {
+                if (!SwitchContextIfNecessary(p))
+                {
+                    return;
+                }
                 p.Status = "Running";
                 p.CPU_usage++;
                 Ready.Remove(p);
@@ -133,6 +137,49 @@ namespace ORS3_OS.Processes
 
         }
         */
+        
+        public bool SwitchContextIfNecessary(Process toRun)
+        {
+            // ako se proces vec nalazi u RAMu ne diraj nista
+            if(MainClass.RAM.Contains(toRun.Name))
+            {
+                return true;
+            }
+
+            // ako fali memorija na RAMu, oslobodi RAM memorije onih procesa koji su u Blocked stanju
+            if (MainClass.RAM.Count + toRun.Memory > MainClass.MAX_RAM)
+            {
+                // proc = getPriority and ready
+                foreach(Process proc in this.Ready)
+                {
+                    if (MainClass.RAM.Contains(proc.Name))
+                    {
+                        MainClass.RAM.RemoveAll(x => x.Equals(proc.Name));
+                        for(int i=0; i < proc.Memory; ++i)
+                        {
+                            MainClass.HardDriveMemory.Add(proc.Name);
+                        }
+                    }
+                }
+            }
+
+            if (MainClass.RAM.Count + toRun.Memory <= MainClass.MAX_RAM)
+            {
+                // ako proces nije na RAMu skini ga sa Hard diska
+                MainClass.HardDriveMemory.RemoveAll(x => x.Equals(toRun.Name));
+
+                for (int i = 0; i < toRun.Memory; ++i)
+                {
+                    MainClass.RAM.Add(toRun.Name);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void TaskManager()
         {
             Console.WriteLine("Task Manager!");
