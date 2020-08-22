@@ -21,16 +21,29 @@ namespace ORS3_OS.Processes
         {
             Random rnd = new Random();
             Pid = rnd.Next(1000, 10000);
-            //this.Memory = Memory;
+            this.Memory = new Random().Next(12);
             this.Name = Name;
             CPU_usage = 0;
             Status = "Ready";
+            List<string> putOn = null;
+            if(MainClass.RAM.Count + this.Memory <= MainClass.MAX_RAM)
+            {
+                putOn = MainClass.RAM;
+            }
+            else
+            {
+                putOn = MainClass.HardDriveMemory;
+            }
+            for (int i = 0; i < Memory; ++i)
+            {
+                putOn.Add(Name);
+            }
             //Console.WriteLine("Process created.");
         }
 
         public void Utilization()
         {
-            if (this.Status == "Running")
+            if (this.Status.Equals("Running"))
             {
                 CPU_usage++;
             }
